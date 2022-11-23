@@ -217,6 +217,26 @@ class Manifest
     }
 
     /**
+     * Has package in either list
+     */
+    public function hasPackage(string $package): bool
+    {
+        return
+            isset($this->data->require->{$package}) ||
+            isset($this->data->{'require-dev'}->{$package});
+    }
+
+    /**
+     * Get package version
+     */
+    public function getPackageVersion(string $package): ?string
+    {
+        return
+            $this->data->require[$package] ??
+            $this->data->{'require-dev'}[$package];
+    }
+
+    /**
      * Get conflict list
      *
      * @return array<string, Package>

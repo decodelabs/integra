@@ -20,6 +20,7 @@
     },
     "require-dev": {
         "decodelabs/glitch": "^0.18.5",
+        "decodelabs/terminus": "^0.9.4",
         "decodelabs/phpstan-decodelabs": "^0.6.2"
     },
     "autoload": {

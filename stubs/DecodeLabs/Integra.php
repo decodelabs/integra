@@ -87,29 +87,32 @@ class Integra implements Proxy
     public static function runGlobalBin(string $name, string ...$args): bool {
         return static::$instance->runGlobalBin(...func_get_args());
     }
-    public static function install(string $name, ?string $version = NULL): bool {
+    public static function install(string $name, string ...$other): bool {
         return static::$instance->install(...func_get_args());
     }
-    public static function installDev(string $name, ?string $version = NULL): bool {
+    public static function installDev(string $name, string ...$other): bool {
         return static::$instance->installDev(...func_get_args());
     }
-    public static function installGlobal(string $name, ?string $version = NULL): bool {
+    public static function installGlobal(string $name, string ...$other): bool {
         return static::$instance->installGlobal(...func_get_args());
     }
-    public static function installDevGlobal(string $name, ?string $version = NULL): bool {
+    public static function installDevGlobal(string $name, string ...$other): bool {
         return static::$instance->installDevGlobal(...func_get_args());
     }
-    public static function uninstall(string $name, ?string $version = NULL): bool {
+    public static function uninstall(string $name, string ...$other): bool {
         return static::$instance->uninstall(...func_get_args());
     }
-    public static function uninstallDev(string $name, ?string $version = NULL): bool {
+    public static function uninstallDev(string $name, string ...$other): bool {
         return static::$instance->uninstallDev(...func_get_args());
     }
-    public static function uninstallGlobal(string $name, ?string $version = NULL): bool {
+    public static function uninstallGlobal(string $name, string ...$other): bool {
         return static::$instance->uninstallGlobal(...func_get_args());
     }
-    public static function uninstallDevGlobal(string $name, ?string $version = NULL): bool {
+    public static function uninstallDevGlobal(string $name, string ...$other): bool {
         return static::$instance->uninstallDevGlobal(...func_get_args());
+    }
+    public static function preparePackageInstallName(string $name, ?string $version = NULL): string {
+        return static::$instance->preparePackageInstallName(...func_get_args());
     }
     public static function hasPackage(string $package): bool {
         return static::$instance->hasPackage(...func_get_args());

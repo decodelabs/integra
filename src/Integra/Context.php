@@ -38,8 +38,10 @@ class Context
     public File $composerFile;
 
 
-    protected ?string $phpBinary = null;
     protected bool $forceLocal = false;
+    protected bool $ciMode = false;
+
+    protected ?string $phpBinary = null;
     protected Manifest $manifest;
     protected ?Session $session = null;
 
@@ -207,6 +209,25 @@ class Context
         return $this->forceLocal;
     }
 
+    /**
+     * Set CI mode
+     *
+     * @return $this;
+     */
+    public function setCiMode(bool $mode): static
+    {
+        $this->ciMode = $mode;
+        return $this;
+    }
+
+    /**
+     * Get CI mode
+     */
+    public function isCiMode(): bool
+    {
+        return $this->ciMode;
+    }
+
 
 
 
@@ -223,6 +244,8 @@ class Context
         )) {
             $args = [$arg, ...$args];
         }
+
+        $args = $this->reorderArguments($args);
 
         return $this->newComposerLauncher($args)
             ->launch()
@@ -243,6 +266,50 @@ class Context
         }
 
         return $this->run(...$args);
+    }
+
+    /**
+     * @param array<string> $args
+     * @return array<string>
+     */
+    protected function reorderArguments(array $args): array
+    {
+        static $find = [
+            '--no-interaction',
+            '--no-plugins',
+            '--no-scripts'
+        ];
+
+        $escape = false;
+        $output = $script = [];
+
+        foreach ($args as $arg) {
+            if ($arg === '--') {
+                $escape = true;
+                continue;
+            }
+
+            if (in_array($arg, $find)) {
+                $output[] = $arg;
+            } elseif ($escape) {
+                $script[] = $arg;
+            } else {
+                $output[] = $arg;
+            }
+        }
+
+        if (
+            $this->ciMode &&
+            !in_array('--no-interaction', $output)
+        ) {
+        }
+
+        if (!empty($script)) {
+            $output[] = '--';
+            $output = array_merge($output, $script);
+        }
+
+        return $output;
     }
 
 

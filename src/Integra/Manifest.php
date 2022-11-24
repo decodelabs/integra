@@ -43,6 +43,11 @@ class Manifest
      */
     public function reload(): void
     {
+        if (!$this->file->exists()) {
+            $this->data = new NativeTree();
+            return;
+        }
+
         /** @var array<string, mixed> */
         $json = json_decode($this->file->getContents(), true);
         /** @phpstan-var TTree $tree */

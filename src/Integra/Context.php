@@ -12,6 +12,8 @@ namespace DecodeLabs\Integra;
 use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
+use DecodeLabs\Coercion;
+use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Systemic;
 use DecodeLabs\Systemic\Process\Launcher;
@@ -30,10 +32,13 @@ class Context
     public Dir $rootDir;
 
     #[Plugin]
+    public Dir $binDir;
+
+    #[Plugin]
     public File $composerFile;
 
 
-    protected ?string $phpBin = null;
+    protected ?string $phpBinary = null;
     protected bool $forceLocal = false;
     protected Manifest $manifest;
     protected ?Session $session = null;
@@ -52,6 +57,7 @@ class Context
         $this->runDir = $runDir;
         $this->composerFile = $this->findComposerJson();
         $this->rootDir = $this->composerFile->getParent() ?? clone $runDir;
+        $this->binDir = $this->findBinDir();
     }
 
     /**
@@ -75,6 +81,28 @@ class Context
     }
 
     /**
+     * Find bin dir
+     */
+    protected function findBinDir(): Dir
+    {
+        if (
+            (!$path = getenv('COMPOSER_BIN_DIR')) ||
+            false === ($path = realpath($path))
+        ) {
+            $path = null;
+        }
+
+        $path = $path ??
+            Coercion::toStringOrNull($this->getLocalManifest()->getConfig()['bin-dir']) ??
+            'vendor/bin';
+
+        return $this->rootDir->getDir($path);
+    }
+
+
+
+
+    /**
      * Get composer.json manifest
      */
     public function getLocalManifest(): Manifest
@@ -91,9 +119,9 @@ class Context
      *
      * @return $this;
      */
-    public function setPhpBinary(string $bin): static
+    public function setPhpBinary(?string $bin): static
     {
-        $this->phpBin = $bin;
+        $this->phpBinary = $bin;
         return $this;
     }
 
@@ -102,8 +130,13 @@ class Context
      */
     public function getPhpBinary(): string
     {
-        return $this->phpBin ?? 'php';
+        return
+            $this->phpBinary ??
+            Systemic::$os->which('php') ??
+            'php';
     }
+
+
 
     /**
      * Set CLI session
@@ -174,6 +207,9 @@ class Context
         return $this->forceLocal;
     }
 
+
+
+
     /**
      * Run composer command
      */
@@ -181,6 +217,13 @@ class Context
         string $arg,
         string ...$args
     ): bool {
+        if (
+            $this->forceLocal &&
+            $args[0] === 'global'
+        ) {
+            array_shift($args);
+        }
+
         return $this->newComposerLauncher([$arg, ...$args])
             ->launch()
             ->wasSuccessful();
@@ -202,6 +245,26 @@ class Context
         return $this->run(...$args);
     }
 
+
+
+    /**
+     * Has script
+     */
+    public function hasScript(string $name): bool
+    {
+        return $this->getLocalManifest()->hasScript($name);
+    }
+
+    /**
+     * Get scripts list
+     *
+     * @return array<string, string>
+     */
+    public function getScripts(): array
+    {
+        return $this->getLocalManifest()->getScripts();
+    }
+
     /**
      * Run script
      */
@@ -210,6 +273,28 @@ class Context
         string ...$args
     ): bool {
         return $this->run('run-script', $name, '--', ...$args);
+    }
+
+
+
+    /**
+     * Has bin
+     */
+    public function hasBin(string $name): bool
+    {
+        return
+            false === strpos($name, '/') &&
+            $this->rootDir->getFile('vendor/bin/' . $name)->exists();
+    }
+
+    /**
+     * Get bin list
+     *
+     * @return array<File>
+     */
+    public function getBins(): array
+    {
+        return $this->binDir->listFiles();
     }
 
     /**
@@ -222,6 +307,9 @@ class Context
         return $this->run('exec', $name, '--', ...$args);
     }
 
+
+
+
     /**
      * Install package
      */
@@ -229,13 +317,17 @@ class Context
         string $name,
         ?string $version = null
     ): bool {
-        $pkg = $name;
+        return $this->run('require', $this->preparePackageInstallName($name, $version));
+    }
 
-        if ($version !== null) {
-            $pkg .= ':' . $version;
-        }
-
-        return $this->run('require', '"' . $pkg . '"');
+    /**
+     * Install package
+     */
+    public function installDev(
+        string $name,
+        ?string $version = null
+    ): bool {
+        return $this->run('require', $this->preparePackageInstallName($name, $version), '--dev');
     }
 
     /**
@@ -245,13 +337,33 @@ class Context
         string $name,
         ?string $version = null
     ): bool {
+        return $this->runGlobal('require', $this->preparePackageInstallName($name, $version));
+    }
+
+    /**
+     * Install package
+     */
+    public function installDevGlobal(
+        string $name,
+        ?string $version = null
+    ): bool {
+        return $this->runGlobal('require', $this->preparePackageInstallName($name, $version), '--dev');
+    }
+
+    /**
+     * Prepare package install name
+     */
+    protected function preparePackageInstallName(
+        string $name,
+        ?string $version = null
+    ): string {
         $pkg = $name;
 
         if ($version !== null) {
             $pkg .= ':' . $version;
         }
 
-        return $this->runGlobal('require', '"' . $pkg . '"');
+        return '"' . $pkg . '"';
     }
 
     /**
@@ -261,5 +373,17 @@ class Context
     {
         $manifest = $this->getLocalManifest();
         return $manifest->hasPackage($package);
+    }
+
+
+
+    /**
+     * Get extra config
+     *
+     * @phpstan-return Tree<string|int|float|null>
+     */
+    public function getExtra(): Tree
+    {
+        return $this->getLocalManifest()->getExtra();
     }
 }

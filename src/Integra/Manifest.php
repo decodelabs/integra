@@ -227,6 +227,42 @@ class Manifest
     }
 
     /**
+     * Get installed packages
+     *
+     * @return array<string, Package>
+     */
+    public function getInstalledPackages(): array
+    {
+        return array_merge(
+            $this->getRequiredPackages(),
+            $this->getRequiredDevPackages()
+        );
+    }
+
+    /**
+     * Get required extensions
+     *
+     * @return array<string>
+     */
+    public function getRequiredExtensions(): array
+    {
+        $output = [];
+
+        foreach ($this->getInstalledPackages() as $package) {
+            $matches = [];
+
+            if (!preg_match('/^ext-([a-zA-Z0-9-_]+)$/', $package->name, $matches)) {
+                continue;
+            }
+
+            $name = $matches[1];
+            $output[] = $name;
+        }
+
+        return $output;
+    }
+
+    /**
      * Get package version
      */
     public function getPackageVersion(string $package): ?string
@@ -371,6 +407,24 @@ class Manifest
         }
 
         return $output;
+    }
+
+    /**
+     * Get scripts
+     *
+     * @return array<string, string>
+     */
+    public function getScripts(): array
+    {
+        return $this->data->scripts->as('string[]');
+    }
+
+    /**
+     * Has script
+     */
+    public function hasScript(string $name): bool
+    {
+        return isset($this->data->scripts->{$name});
     }
 
     /**

@@ -10,10 +10,12 @@ use DecodeLabs\Veneer\ProxyTrait as ProxyTrait;
 use DecodeLabs\Integra\Context as Inst;
 use DecodeLabs\Atlas\Dir as RunDirPlugin;
 use DecodeLabs\Atlas\Dir as RootDirPlugin;
+use DecodeLabs\Atlas\Dir as BinDirPlugin;
 use DecodeLabs\Atlas\File as ComposerFilePlugin;
 use DecodeLabs\Integra\Manifest as Ref0;
 use DecodeLabs\Terminus\Session as Ref1;
 use DecodeLabs\Systemic\Process\Launcher as Ref2;
+use DecodeLabs\Collections\Tree as Ref3;
 
 class Integra implements Proxy
 {
@@ -25,12 +27,13 @@ class Integra implements Proxy
     public static Inst $instance;
     public static RunDirPlugin $runDir;
     public static RootDirPlugin $rootDir;
+    public static BinDirPlugin $binDir;
     public static ComposerFilePlugin $composerFile;
 
     public static function getLocalManifest(): Ref0 {
         return static::$instance->getLocalManifest();
     }
-    public static function setPhpBinary(string $bin): Inst {
+    public static function setPhpBinary(?string $bin): Inst {
         return static::$instance->setPhpBinary(...func_get_args());
     }
     public static function getPhpBinary(): string {
@@ -57,8 +60,20 @@ class Integra implements Proxy
     public static function runGlobal(string $arg, string ...$args): bool {
         return static::$instance->runGlobal(...func_get_args());
     }
+    public static function hasScript(string $name): bool {
+        return static::$instance->hasScript(...func_get_args());
+    }
+    public static function getScripts(): array {
+        return static::$instance->getScripts();
+    }
     public static function runScript(string $name, string ...$args): bool {
         return static::$instance->runScript(...func_get_args());
+    }
+    public static function hasBin(string $name): bool {
+        return static::$instance->hasBin(...func_get_args());
+    }
+    public static function getBins(): array {
+        return static::$instance->getBins();
     }
     public static function runBin(string $name, string ...$args): bool {
         return static::$instance->runBin(...func_get_args());
@@ -66,10 +81,19 @@ class Integra implements Proxy
     public static function install(string $name, ?string $version = NULL): bool {
         return static::$instance->install(...func_get_args());
     }
+    public static function installDev(string $name, ?string $version = NULL): bool {
+        return static::$instance->installDev(...func_get_args());
+    }
     public static function installGlobal(string $name, ?string $version = NULL): bool {
         return static::$instance->installGlobal(...func_get_args());
     }
+    public static function installDevGlobal(string $name, ?string $version = NULL): bool {
+        return static::$instance->installDevGlobal(...func_get_args());
+    }
     public static function hasPackage(string $package): bool {
         return static::$instance->hasPackage(...func_get_args());
+    }
+    public static function getExtra(): Ref3 {
+        return static::$instance->getExtra();
     }
 };

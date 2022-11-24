@@ -219,7 +219,7 @@ class Context
     ): bool {
         if (
             $this->forceLocal &&
-            $args[0] === 'global'
+            $arg === 'global'
         ) {
             array_shift($args);
         }

@@ -80,11 +80,9 @@ class Manifest
     /**
      * Get package type
      */
-    public function getType(): string
+    public function getType(): ?string
     {
-        return $this->data->type->as('string', [
-            'default' => 'library'
-        ]);
+        return $this->data->type->as('?string');
     }
 
     /**

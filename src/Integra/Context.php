@@ -361,6 +361,46 @@ class Context
     }
 
     /**
+     * Uninstall package
+     */
+    public function uninstall(
+        string $name,
+        ?string $version = null
+    ): bool {
+        return $this->run('remove', $this->preparePackageInstallName($name, $version));
+    }
+
+    /**
+     * Uninstall package
+     */
+    public function uninstallDev(
+        string $name,
+        ?string $version = null
+    ): bool {
+        return $this->run('remove', $this->preparePackageInstallName($name, $version), '--dev');
+    }
+
+    /**
+     * Uninstall package
+     */
+    public function uninstallGlobal(
+        string $name,
+        ?string $version = null
+    ): bool {
+        return $this->runGlobal('remove', $this->preparePackageInstallName($name, $version));
+    }
+
+    /**
+     * Uninstall package
+     */
+    public function uninstallDevGlobal(
+        string $name,
+        ?string $version = null
+    ): bool {
+        return $this->runGlobal('remove', $this->preparePackageInstallName($name, $version), '--dev');
+    }
+
+    /**
      * Prepare package install name
      */
     protected function preparePackageInstallName(

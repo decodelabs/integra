@@ -307,6 +307,16 @@ class Context
         return $this->run('exec', $name, '--', ...$args);
     }
 
+    /**
+     * Run global binary
+     */
+    public function runGlobalBin(
+        string $name,
+        string ...$args
+    ): bool {
+        return $this->runGlobal('exec', $name, '--', ...$args);
+    }
+
 
 
 

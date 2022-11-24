@@ -414,7 +414,7 @@ class Context
         string $name,
         string ...$other
     ): bool {
-        return $this->runGlobal('require', $name, ...$other);
+        return $this->runGlobal(...['require', $name, ...$other, '--with-all-dependencies']);
     }
 
     /**
@@ -424,7 +424,7 @@ class Context
         string $name,
         string ...$other
     ): bool {
-        return $this->runGlobal(...['require', $name, ...$other, '--dev']);
+        return $this->runGlobal(...['require', $name, ...$other, '--dev', '--with-all-dependencies']);
     }
 
     /**

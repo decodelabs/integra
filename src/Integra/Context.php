@@ -217,14 +217,14 @@ class Context
         string $arg,
         string ...$args
     ): bool {
-        if (
+        if (!(
             $this->forceLocal &&
             $arg === 'global'
-        ) {
-            array_shift($args);
+        )) {
+            $args = [$arg, ...$args];
         }
 
-        return $this->newComposerLauncher([$arg, ...$args])
+        return $this->newComposerLauncher($args)
             ->launch()
             ->wasSuccessful();
     }

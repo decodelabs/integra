@@ -54,6 +54,12 @@ class Integra implements Proxy
     public static function isForcedLocal(): bool {
         return static::$instance->isForcedLocal();
     }
+    public static function setCiMode(bool $mode): Inst {
+        return static::$instance->setCiMode(...func_get_args());
+    }
+    public static function isCiMode(): bool {
+        return static::$instance->isCiMode();
+    }
     public static function run(string $arg, string ...$args): bool {
         return static::$instance->run(...func_get_args());
     }
@@ -78,6 +84,9 @@ class Integra implements Proxy
     public static function runBin(string $name, string ...$args): bool {
         return static::$instance->runBin(...func_get_args());
     }
+    public static function runGlobalBin(string $name, string ...$args): bool {
+        return static::$instance->runGlobalBin(...func_get_args());
+    }
     public static function install(string $name, ?string $version = NULL): bool {
         return static::$instance->install(...func_get_args());
     }
@@ -89,6 +98,18 @@ class Integra implements Proxy
     }
     public static function installDevGlobal(string $name, ?string $version = NULL): bool {
         return static::$instance->installDevGlobal(...func_get_args());
+    }
+    public static function uninstall(string $name, ?string $version = NULL): bool {
+        return static::$instance->uninstall(...func_get_args());
+    }
+    public static function uninstallDev(string $name, ?string $version = NULL): bool {
+        return static::$instance->uninstallDev(...func_get_args());
+    }
+    public static function uninstallGlobal(string $name, ?string $version = NULL): bool {
+        return static::$instance->uninstallGlobal(...func_get_args());
+    }
+    public static function uninstallDevGlobal(string $name, ?string $version = NULL): bool {
+        return static::$instance->uninstallDevGlobal(...func_get_args());
     }
     public static function hasPackage(string $package): bool {
         return static::$instance->hasPackage(...func_get_args());

@@ -392,9 +392,9 @@ class Context
      */
     public function install(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->run('require', $this->preparePackageInstallName($name, $version));
+        return $this->run('require', $name, ...$other);
     }
 
     /**
@@ -402,9 +402,9 @@ class Context
      */
     public function installDev(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->run('require', $this->preparePackageInstallName($name, $version), '--dev');
+        return $this->run(...['require', $name, ...$other, '--dev']);
     }
 
     /**
@@ -412,9 +412,9 @@ class Context
      */
     public function installGlobal(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->runGlobal('require', $this->preparePackageInstallName($name, $version));
+        return $this->runGlobal('require', $name, ...$other);
     }
 
     /**
@@ -422,9 +422,9 @@ class Context
      */
     public function installDevGlobal(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->runGlobal('require', $this->preparePackageInstallName($name, $version), '--dev');
+        return $this->runGlobal(...['require', $name, ...$other, '--dev']);
     }
 
     /**
@@ -432,9 +432,9 @@ class Context
      */
     public function uninstall(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->run('remove', $this->preparePackageInstallName($name, $version));
+        return $this->run('remove', $name, ...$other);
     }
 
     /**
@@ -442,9 +442,9 @@ class Context
      */
     public function uninstallDev(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->run('remove', $this->preparePackageInstallName($name, $version), '--dev');
+        return $this->run(...['remove', $name, ...$other, '--dev']);
     }
 
     /**
@@ -452,9 +452,9 @@ class Context
      */
     public function uninstallGlobal(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->runGlobal('remove', $this->preparePackageInstallName($name, $version));
+        return $this->runGlobal('remove', $name, ...$other);
     }
 
     /**
@@ -462,15 +462,15 @@ class Context
      */
     public function uninstallDevGlobal(
         string $name,
-        ?string $version = null
+        string ...$other
     ): bool {
-        return $this->runGlobal('remove', $this->preparePackageInstallName($name, $version), '--dev');
+        return $this->runGlobal(...['remove', $name, ...$other, '--dev']);
     }
 
     /**
      * Prepare package install name
      */
-    protected function preparePackageInstallName(
+    public function preparePackageInstallName(
         string $name,
         ?string $version = null
     ): string {

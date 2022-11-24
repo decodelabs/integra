@@ -15,6 +15,7 @@ use DecodeLabs\Atlas\File;
 use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as NativeTree;
+use DecodeLabs\Integra;
 use DecodeLabs\Integra\Structure\Author;
 use DecodeLabs\Integra\Structure\Funding;
 use DecodeLabs\Integra\Structure\Package;
@@ -401,7 +402,7 @@ class Manifest
 
         foreach ($this->data->bin as $node) {
             $path = $node->as('string');
-            $output[$path] = Atlas::file(dirname((string)$this->file) . '/' . $path);
+            $output[$path] = Integra::$binDir->getFile($path);
         }
 
         return $output;

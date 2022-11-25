@@ -480,7 +480,7 @@ class Context
             $pkg .= ':' . $version;
         }
 
-        return '"' . $pkg . '"';
+        return $pkg;
     }
 
     /**

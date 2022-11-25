@@ -1,3 +1,5 @@
+* Removed quotes from install package defs
+
 ## v0.1.2 (2022-11-24)
 * Check for composer.json existence in manifest
 

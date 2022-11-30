@@ -16,8 +16,6 @@ use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Systemic;
-use DecodeLabs\Systemic\Process\Launcher;
-use DecodeLabs\Terminus;
 use DecodeLabs\Terminus\Session;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;

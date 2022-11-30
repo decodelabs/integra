@@ -16,8 +16,6 @@ use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Systemic;
-use DecodeLabs\Systemic\Process\Launcher;
-use DecodeLabs\Terminus;
 use DecodeLabs\Terminus\Session;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
@@ -132,10 +130,20 @@ class Context
      */
     public function getPhpBinary(): string
     {
-        return
-            $this->phpBinary ??
-            Systemic::$os->which('php') ??
-            'php';
+        if ($this->phpBinary !== null) {
+            return $this->phpBinary;
+        }
+
+        $output = Systemic::$os->which('php');
+
+        if (
+            $output === null ||
+            str_contains($output, '/sbin/')
+        ) {
+            $output = 'php';
+        }
+
+        return $output;
     }
 
 
@@ -160,35 +168,6 @@ class Context
     }
 
 
-    /**
-     * New composer launcher
-     *
-     * @param string|array<string>|null $args
-     */
-    public function newComposerLauncher(
-        string|array|null $args = null
-    ): Launcher {
-        if ($args === null) {
-            $args = [];
-        } elseif (!is_array($args)) {
-            $args = (array)$args;
-        }
-
-        if (null === ($composer = Systemic::$os->which('composer'))) {
-            throw Exceptional::NotFound('Unable to locate global composer executable');
-        }
-
-        array_unshift($args, $composer);
-
-        return Systemic::$process->newLauncher(
-            $this->getPhpBinary(),
-            $args,
-            $this->rootDir,
-            $this->session ??
-                class_exists(Terminus::class) ?
-                    Terminus::getSession() : null
-        );
-    }
 
     /**
      * Force local calls
@@ -247,9 +226,12 @@ class Context
 
         $args = $this->reorderArguments($args);
 
-        return $this->newComposerLauncher($args)
-            ->launch()
-            ->wasSuccessful();
+        if (null === ($composer = Systemic::$os->which('composer'))) {
+            throw Exceptional::NotFound('Unable to locate global composer executable');
+        }
+
+        array_unshift($args, $this->getPhpBinary(), $composer);
+        return Systemic::run($args, $this->rootDir);
     }
 
     /**

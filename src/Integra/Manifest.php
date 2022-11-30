@@ -44,6 +44,7 @@ class Manifest
     public function reload(): void
     {
         if (!$this->file->exists()) {
+            /** @phpstan-ignore-next-line */
             $this->data = new NativeTree();
             return;
         }

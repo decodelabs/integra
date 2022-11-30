@@ -14,8 +14,7 @@ use DecodeLabs\Atlas\Dir as BinDirPlugin;
 use DecodeLabs\Atlas\File as ComposerFilePlugin;
 use DecodeLabs\Integra\Manifest as Ref0;
 use DecodeLabs\Terminus\Session as Ref1;
-use DecodeLabs\Systemic\Process\Launcher as Ref2;
-use DecodeLabs\Collections\Tree as Ref3;
+use DecodeLabs\Collections\Tree as Ref2;
 
 class Integra implements Proxy
 {
@@ -44,9 +43,6 @@ class Integra implements Proxy
     }
     public static function getSession(): ?Ref1 {
         return static::$instance->getSession();
-    }
-    public static function newComposerLauncher(array|string|null $args = NULL): Ref2 {
-        return static::$instance->newComposerLauncher(...func_get_args());
     }
     public static function forceLocal(bool $force = true): Inst {
         return static::$instance->forceLocal(...func_get_args());
@@ -117,7 +113,7 @@ class Integra implements Proxy
     public static function hasPackage(string $package): bool {
         return static::$instance->hasPackage(...func_get_args());
     }
-    public static function getExtra(): Ref3 {
+    public static function getExtra(): Ref2 {
         return static::$instance->getExtra();
     }
 };

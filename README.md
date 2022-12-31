@@ -34,6 +34,8 @@ $context = new Context('path/to/project/');
 ```
 
 Or use the `Integra` Veneer frontage to work from `cwd()`.
+Integra will search back up the file tree for the nearest composer.json.
+
 
 ```php
 echo Integra::$runDir; // Working directory

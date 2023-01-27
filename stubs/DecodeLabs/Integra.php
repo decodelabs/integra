@@ -20,7 +20,7 @@ class Integra implements Proxy
 {
     use ProxyTrait;
 
-    const VENEER = 'DecodeLabs\Integra';
+    const VENEER = 'DecodeLabs\\Integra';
     const VENEER_TARGET = Inst::class;
 
     public static Inst $instance;

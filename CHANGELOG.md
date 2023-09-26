@@ -1,3 +1,6 @@
+## v0.1.5 (2023-09-26)
+* Converted phpstan doc comments to generic
+
 ## v0.1.4 (2022-11-30)
 * Switched to Systemic v0.11
 

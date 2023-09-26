@@ -20,15 +20,12 @@ use DecodeLabs\Integra\Structure\Author;
 use DecodeLabs\Integra\Structure\Funding;
 use DecodeLabs\Integra\Structure\Package;
 
-/**
- * @phpstan-type TTree Tree<string|int|float|null>
- */
 class Manifest
 {
     protected File $file;
 
     /**
-     * @phpstan-var TTree
+     * @var Tree<string|int|float|null>
      */
     protected Tree $data;
 
@@ -51,7 +48,7 @@ class Manifest
 
         /** @var array<string, mixed> */
         $json = json_decode($this->file->getContents(), true);
-        /** @phpstan-var TTree $tree */
+        /** @var Tree<string|int|float|null> $tree */
         $tree = new NativeTree($json);
         $this->data = $tree;
     }
@@ -60,7 +57,7 @@ class Manifest
     /**
      * Get node from tree
      *
-     * @phpstan-return TTree
+     * @return Tree<string|int|float|null>
      */
     public function __get(string $name): Tree
     {
@@ -339,7 +336,7 @@ class Manifest
     /**
      * Get autoload config
      *
-     * @phpstan-return TTree
+     * @return Tree<string|int|float|null>
      */
     public function getAutoloadConfig(): Tree
     {
@@ -370,7 +367,7 @@ class Manifest
     /**
      * Get repository config
      *
-     * @phpstan-return TTree
+     * @return Tree<string|int|float|null>
      */
     public function getRepositoryConfig(): Tree
     {
@@ -380,7 +377,7 @@ class Manifest
     /**
      * Get config
      *
-     * @phpstan-return TTree
+     * @return Tree<string|int|float|null>
      */
     public function getConfig(): Tree
     {
@@ -390,7 +387,7 @@ class Manifest
     /**
      * Get extra
      *
-     * @phpstan-return TTree
+     * @return Tree<string|int|float|null>
      */
     public function getExtra(): Tree
     {
@@ -435,7 +432,7 @@ class Manifest
     /**
      * Get archive config
      *
-     * @phpstan-return TTree
+     * @return Tree<string|int|float|null>
      */
     public function getArchiveConfig(): Tree
     {

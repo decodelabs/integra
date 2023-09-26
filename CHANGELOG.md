@@ -1,3 +1,5 @@
+* Converted phpstan doc comments to generic
+
 ## v0.1.4 (2022-11-30)
 * Switched to Systemic v0.11
 

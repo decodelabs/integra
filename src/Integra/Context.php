@@ -479,7 +479,7 @@ class Context
     /**
      * Get extra config
      *
-     * @phpstan-return Tree<string|int|float|null>
+     * @return Tree<string|int|float|null>
      */
     public function getExtra(): Tree
     {

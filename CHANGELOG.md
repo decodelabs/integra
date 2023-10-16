@@ -1,3 +1,5 @@
+* Updated Atlas dependency
+
 ## v0.1.5 (2023-09-26)
 * Converted phpstan doc comments to generic
 

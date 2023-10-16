@@ -2,16 +2,16 @@
     "name": "decodelabs/integra",
     "description": "Composer file inspector and front-end",
     "type": "library",
-    "keywords": [],
+    "keywords": [ ],
     "license": "MIT",
-    "authors": [{
-        "name": "Tom Wright",
-        "email": "tom@inflatablecookie.com"
-    }],
+    "authors": [ {
+            "name": "Tom Wright",
+            "email": "tom@inflatablecookie.com"
+        } ],
     "require": {
         "php": "^8.0",
 
-        "decodelabs/atlas": "^0.10.5",
+        "decodelabs/atlas": "^0.10.5|^0.11",
         "decodelabs/coercion": "^0.2.6",
         "decodelabs/collections": "^0.8.1",
         "decodelabs/exceptional": "^0.4.3",
@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "decodelabs/glitch": "^0.18.5",
-        "decodelabs/terminus": "^0.9.4",
+        "decodelabs/terminus": "^0.9.4|^0.10",
         "decodelabs/phpstan-decodelabs": "^0.6.2"
     },
     "autoload": {

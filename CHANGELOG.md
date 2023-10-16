@@ -1,3 +1,4 @@
+## v0.1.6 (2023-10-16)
 * Updated Atlas dependency
 
 ## v0.1.5 (2023-09-26)

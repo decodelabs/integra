@@ -22,9 +22,6 @@ use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
 
-// Register the Veneer facade
-Veneer::register(Context::class, Integra::class);
-
 #[LazyLoad]
 class Context
 {
@@ -491,3 +488,6 @@ class Context
         return $this->getLocalManifest()->getExtra();
     }
 }
+
+// Register the Veneer facade
+Veneer::register(Context::class, Integra::class);

@@ -25,10 +25,10 @@
     },
     "autoload": {
         "psr-4": {
-            "DecodeLabs\\Integra\\": "src/Integra"
+            "DecodeLabs\\Integra\\": "src/"
         },
         "files": [
-            "src/global.php"
+            "src/Context.php"
         ]
     },
     "extra": {

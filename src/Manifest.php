@@ -139,9 +139,7 @@ class Manifest
             return Coercion::toStringOrNull(array_pop($arr));
         }
 
-        return $this->data->license->as('?string', [
-            'default' => 'proprietary'
-        ]);
+        return $this->data->license->as('?string');
     }
 
     /**

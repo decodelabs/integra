@@ -1,3 +1,7 @@
+## v0.1.7 (2023-10-30)
+* Removed default composer license value
+* Refactored package file structure
+
 ## v0.1.6 (2023-10-16)
 * Updated Atlas dependency
 

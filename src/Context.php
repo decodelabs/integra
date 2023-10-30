@@ -15,8 +15,10 @@ use DecodeLabs\Atlas\File;
 use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Integra;
 use DecodeLabs\Systemic;
 use DecodeLabs\Terminus\Session;
+use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
 
@@ -486,3 +488,6 @@ class Context
         return $this->getLocalManifest()->getExtra();
     }
 }
+
+// Register the Veneer facade
+Veneer::register(Context::class, Integra::class);

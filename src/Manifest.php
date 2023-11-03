@@ -29,8 +29,9 @@ class Manifest
      */
     protected Tree $data;
 
-    public function __construct(File $file)
-    {
+    public function __construct(
+        File $file
+    ) {
         $this->file = $file;
         $this->reload();
     }
@@ -59,8 +60,9 @@ class Manifest
      *
      * @return Tree<string|int|float|null>
      */
-    public function __get(string $name): Tree
-    {
+    public function __get(
+        string $name
+    ): Tree {
         return $this->data->{$name};
     }
 
@@ -219,8 +221,9 @@ class Manifest
     /**
      * Has package in either list
      */
-    public function hasPackage(string $package): bool
-    {
+    public function hasPackage(
+        string $package
+    ): bool {
         return
             isset($this->data->require->{$package}) ||
             isset($this->data->{'require-dev'}->{$package});
@@ -265,8 +268,9 @@ class Manifest
     /**
      * Get package version
      */
-    public function getPackageVersion(string $package): ?string
-    {
+    public function getPackageVersion(
+        string $package
+    ): ?string {
         return
             $this->data->require[$package] ??
             $this->data->{'require-dev'}[$package];
@@ -307,8 +311,9 @@ class Manifest
      *
      * @return array<string, Package>
      */
-    protected function getPackageMap(string $dataKey): array
-    {
+    protected function getPackageMap(
+        string $dataKey
+    ): array {
         $output = [];
 
         foreach ($this->data->{$dataKey} as $key => $node) {
@@ -422,8 +427,9 @@ class Manifest
     /**
      * Has script
      */
-    public function hasScript(string $name): bool
-    {
+    public function hasScript(
+        string $name
+    ): bool {
         return isset($this->data->scripts->{$name});
     }
 

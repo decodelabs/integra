@@ -1,4 +1,5 @@
 * Made PHP8.1 minimum version
+* Updated dependency list
 
 ## v0.1.7 (2023-10-30)
 * Removed default composer license value

@@ -19,7 +19,7 @@
         "decodelabs/veneer": "^0.10.14"
     },
     "require-dev": {
-        "decodelabs/terminus": "^0.9.4|^0.10",
+        "decodelabs/terminus": "^0.10",
         "decodelabs/phpstan-decodelabs": "^0.6.2"
     },
     "autoload": {

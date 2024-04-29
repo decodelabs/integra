@@ -1,3 +1,8 @@
+## v0.1.8 (2024-04-29)
+* Made PHP8.1 minimum version
+* Updated dependency list
+* Fixed Veneer stubs in gitattributes
+
 ## v0.1.7 (2023-10-30)
 * Removed default composer license value
 * Refactored package file structure

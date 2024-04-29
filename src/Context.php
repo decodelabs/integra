@@ -46,8 +46,9 @@ class Context
     protected ?Session $session = null;
 
 
-    public function __construct(?Dir $runDir = null)
-    {
+    public function __construct(
+        ?Dir $runDir = null
+    ) {
         if (!$runDir) {
             if (false === ($dir = getcwd())) {
                 throw Exceptional::Runtime('Unable to get current working directory');
@@ -121,8 +122,9 @@ class Context
      *
      * @return $this;
      */
-    public function setPhpBinary(?string $bin): static
-    {
+    public function setPhpBinary(
+        ?string $bin
+    ): static {
         $this->phpBinary = $bin;
         return $this;
     }
@@ -155,8 +157,9 @@ class Context
      *
      * @return $this
      */
-    public function setSession(Session $session): static
-    {
+    public function setSession(
+        Session $session
+    ): static {
         $this->session = $session;
         return $this;
     }
@@ -176,8 +179,9 @@ class Context
      *
      * @return $this;
      */
-    public function forceLocal(bool $force = true): static
-    {
+    public function forceLocal(
+        bool $force = true
+    ): static {
         $this->forceLocal = $force;
         return $this;
     }
@@ -195,8 +199,9 @@ class Context
      *
      * @return $this;
      */
-    public function setCiMode(bool $mode): static
-    {
+    public function setCiMode(
+        bool $mode
+    ): static {
         $this->ciMode = $mode;
         return $this;
     }
@@ -256,8 +261,9 @@ class Context
      * @param array<string> $args
      * @return array<string>
      */
-    protected function reorderArguments(array $args): array
-    {
+    protected function reorderArguments(
+        array $args
+    ): array {
         static $find = [
             '--no-interaction',
             '--no-plugins',
@@ -301,8 +307,9 @@ class Context
     /**
      * Has script
      */
-    public function hasScript(string $name): bool
-    {
+    public function hasScript(
+        string $name
+    ): bool {
         return $this->getLocalManifest()->hasScript($name);
     }
 
@@ -331,8 +338,9 @@ class Context
     /**
      * Has bin
      */
-    public function hasBin(string $name): bool
-    {
+    public function hasBin(
+        string $name
+    ): bool {
         return
             false === strpos($name, '/') &&
             $this->rootDir->getFile('vendor/bin/' . $name)->exists();
@@ -470,8 +478,9 @@ class Context
     /**
      * Has package
      */
-    public function hasPackage(string $package): bool
-    {
+    public function hasPackage(
+        string $package
+    ): bool {
         $manifest = $this->getLocalManifest();
         return $manifest->hasPackage($package);
     }

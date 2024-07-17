@@ -1,3 +1,6 @@
+## v0.1.9 (2024-07-17)
+* Updated Veneer dependency
+
 ## v0.1.8 (2024-04-29)
 * Made PHP8.1 minimum version
 * Updated dependency list

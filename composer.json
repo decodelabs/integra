@@ -16,7 +16,7 @@
         "decodelabs/collections": "^0.8.1",
         "decodelabs/exceptional": "^0.4.3",
         "decodelabs/systemic": "^0.11",
-        "decodelabs/veneer": "^0.10.14"
+        "decodelabs/veneer": "^0.11.1"
     },
     "require-dev": {
         "decodelabs/terminus": "^0.10",

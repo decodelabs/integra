@@ -19,10 +19,8 @@ use DecodeLabs\Integra;
 use DecodeLabs\Systemic;
 use DecodeLabs\Terminus\Session;
 use DecodeLabs\Veneer;
-use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
 
-#[LazyLoad]
 class Context
 {
     #[Plugin]

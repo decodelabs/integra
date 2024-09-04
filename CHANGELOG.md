@@ -1,3 +1,5 @@
+* Added Lucid as a dependency
+
 ## v0.1.10 (2024-08-21)
 * Updated dependencies
 * Updated Veneer dependency and Stub

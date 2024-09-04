@@ -15,6 +15,7 @@
         "decodelabs/coercion": "^0.2.6",
         "decodelabs/collections": "^0.9",
         "decodelabs/exceptional": "^0.4.3",
+        "decodelabs/lucid": "^0.4.7",
         "decodelabs/systemic": "^0.11",
         "decodelabs/veneer": "^0.11.6"
     },
@@ -33,6 +34,11 @@
     "extra": {
         "branch-alias": {
             "dev-develop": "0.1.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     }
 }

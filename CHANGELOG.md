@@ -1,4 +1,5 @@
 * Added Lucid as a dependency
+* Added PHP8.4 to CI workflow
 
 ## v0.1.10 (2024-08-21)
 * Updated dependencies

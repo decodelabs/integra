@@ -1,3 +1,11 @@
+## v0.1.11 (2024-08-21)
+* Upgraded PHPStan to v2
+* Added Lucid as a dependency
+* Tidied boolean logic
+* Fixed Exceptional syntax
+* Added PHP8.4 to CI workflow
+* Made PHP8.4 minimum version
+
 ## v0.1.10 (2024-08-21)
 * Updated dependencies
 * Updated Veneer dependency and Stub

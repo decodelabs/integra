@@ -14,7 +14,6 @@ use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
-use DecodeLabs\Collections\Tree\NativeMutable as NativeTree;
 use DecodeLabs\Integra;
 use DecodeLabs\Integra\Structure\Author;
 use DecodeLabs\Integra\Structure\Funding;
@@ -43,14 +42,14 @@ class Manifest
     {
         if (!$this->file->exists()) {
             /** @phpstan-ignore-next-line */
-            $this->data = new NativeTree();
+            $this->data = new Tree();
             return;
         }
 
         /** @var array<string, mixed> */
         $json = json_decode($this->file->getContents(), true);
         /** @var Tree<string|int|float|null> $tree */
-        $tree = new NativeTree($json);
+        $tree = new Tree($json);
         $this->data = $tree;
     }
 
@@ -63,7 +62,7 @@ class Manifest
     public function __get(
         string $name
     ): Tree {
-        return $this->data->{$name};
+        return $this->data->__get($name);
     }
 
 
@@ -168,7 +167,7 @@ class Manifest
     /**
      * Get support info
      *
-     * @return array<string, string>|null;
+     * @return array<string,string>|null
      */
     public function getSupport(): ?array
     {
@@ -176,7 +175,9 @@ class Manifest
             return null;
         }
 
-        return $this->data->support->as('string[]');
+        /** @var array<string,string> */
+        $output = $this->data->support->as('string[]');
+        return $output;
     }
 
     /**
@@ -272,14 +273,14 @@ class Manifest
         string $package
     ): ?string {
         return
-            $this->data->require[$package] ??
-            $this->data->{'require-dev'}[$package];
+            $this->data->require->__get($package)->as('?string') ??
+            $this->data->__get('require-dev')->__get($package)->as('?string');
     }
 
     /**
      * Get conflict list
      *
-     * @return array<string, Package>
+     * @return array<string,Package>
      */
     public function getConflictingPackages(): array
     {
@@ -289,7 +290,7 @@ class Manifest
     /**
      * Get replace list
      *
-     * @return array<string, Package>
+     * @return array<string,Package>
      */
     public function getReplacedPackages(): array
     {
@@ -316,9 +317,9 @@ class Manifest
     ): array {
         $output = [];
 
-        foreach ($this->data->{$dataKey} as $key => $node) {
+        foreach ($this->data->__get($dataKey) as $key => $node) {
             $output[(string)$key] = new Package(
-                $key,
+                (string)$key,
                 $node->as('string')
             );
         }
@@ -329,11 +330,13 @@ class Manifest
     /**
      * Get suggested packages
      *
-     * @return array<string, string>
+     * @return array<string,string>
      */
     public function getSuggestedPackages(): array
     {
-        return $this->data->suggest->as('string[]');
+        /** @var array<string,string> */
+        $output = $this->data->suggest->as('string[]');
+        return $output;
     }
 
     /**
@@ -352,7 +355,7 @@ class Manifest
      */
     public function getMinimumStability(): string
     {
-        return $this->data->{'minimum-stability'}->as('string', [
+        return $this->data->__get('minimum-stability')->as('string', [
             'default' => 'stable'
         ]);
     }
@@ -362,7 +365,7 @@ class Manifest
      */
     public function shouldPreferStable(): bool
     {
-        return $this->data->{'prefer-stable'}->as('bool', [
+        return $this->data->__get('prefer-stable')->as('bool', [
             'default' => false
         ]);
     }
@@ -400,7 +403,7 @@ class Manifest
     /**
      * Get bin files
      *
-     * @return array<string, File>
+     * @return array<string,File>
      */
     public function getBinFiles(): array
     {
@@ -417,11 +420,13 @@ class Manifest
     /**
      * Get scripts
      *
-     * @return array<string, string>
+     * @return array<string,string>
      */
     public function getScripts(): array
     {
-        return $this->data->scripts->as('string[]');
+        /** @var array<string,string> */
+        $output = $this->data->scripts->as('string[]');
+        return $output;
     }
 
     /**
@@ -460,6 +465,6 @@ class Manifest
      */
     public function getNonFeatureBranches(): array
     {
-        return $this->data->{'non-feature-branches'}->as('string[]');
+        return $this->data->__get('non-feature-branches')->as('string[]');
     }
 }

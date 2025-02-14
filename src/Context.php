@@ -49,7 +49,9 @@ class Context
     ) {
         if (!$runDir) {
             if (false === ($dir = getcwd())) {
-                throw Exceptional::Runtime('Unable to get current working directory');
+                throw Exceptional::Runtime(
+                    message: 'Unable to get current working directory'
+                );
             }
 
             $runDir = Atlas::dir($dir);
@@ -118,7 +120,7 @@ class Context
     /**
      * Set PHP binary
      *
-     * @return $this;
+     * @return $this
      */
     public function setPhpBinary(
         ?string $bin
@@ -175,7 +177,7 @@ class Context
     /**
      * Force local calls
      *
-     * @return $this;
+     * @return $this
      */
     public function forceLocal(
         bool $force = true
@@ -195,7 +197,7 @@ class Context
     /**
      * Set CI mode
      *
-     * @return $this;
+     * @return $this
      */
     public function setCiMode(
         bool $mode
@@ -232,7 +234,9 @@ class Context
         $args = $this->reorderArguments($args);
 
         if (null === ($composer = Systemic::$os->which('composer'))) {
-            throw Exceptional::NotFound('Unable to locate global composer executable');
+            throw Exceptional::NotFound(
+                message: 'Unable to locate global composer executable'
+            );
         }
 
         array_unshift($args, $this->getPhpBinary(), $composer);
@@ -255,6 +259,14 @@ class Context
         return $this->run(...$args);
     }
 
+
+
+    protected const array ComposerPassthrough = [
+        '--no-interaction',
+        '--no-plugins',
+        '--no-scripts'
+    ];
+
     /**
      * @param array<string> $args
      * @return array<string>
@@ -262,12 +274,6 @@ class Context
     protected function reorderArguments(
         array $args
     ): array {
-        static $find = [
-            '--no-interaction',
-            '--no-plugins',
-            '--no-scripts'
-        ];
-
         $escape = false;
         $output = $script = [];
 
@@ -277,7 +283,7 @@ class Context
                 continue;
             }
 
-            if (in_array($arg, $find)) {
+            if (in_array($arg, self::ComposerPassthrough)) {
                 $output[] = $arg;
             } elseif ($escape) {
                 $script[] = $arg;
@@ -497,4 +503,7 @@ class Context
 }
 
 // Register the Veneer facade
-Veneer::register(Context::class, Integra::class);
+Veneer\Manager::getGlobalManager()->register(
+    Context::class,
+    Integra::class
+);

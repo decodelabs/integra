@@ -96,7 +96,7 @@ class Context
         }
 
         $path = $path ??
-            Coercion::toStringOrNull($this->getLocalManifest()->getConfig()['bin-dir']) ??
+            Coercion::tryString($this->getLocalManifest()->getConfig()['bin-dir']) ??
             'vendor/bin';
 
         return $this->rootDir->getDir($path);
@@ -494,7 +494,7 @@ class Context
     /**
      * Get extra config
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function getExtra(): Tree
     {

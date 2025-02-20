@@ -12,7 +12,7 @@
         "php": "^8.4",
 
         "decodelabs/atlas": "^0.12",
-        "decodelabs/coercion": "^0.2.6",
+        "decodelabs/coercion": "^0.3",
         "decodelabs/collections": "^0.10",
         "decodelabs/exceptional": "^0.5",
         "decodelabs/lucid": "^0.5",

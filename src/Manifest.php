@@ -24,7 +24,7 @@ class Manifest
     protected File $file;
 
     /**
-     * @var Tree<string|int|float|null>
+     * @var Tree<string|int|float|bool>
      */
     protected Tree $data;
 
@@ -46,9 +46,11 @@ class Manifest
             return;
         }
 
-        /** @var array<string, mixed> */
         $json = json_decode($this->file->getContents(), true);
-        /** @var Tree<string|int|float|null> $tree */
+        /**
+         * @var Tree<string|int|float|bool> $tree
+         * @phpstan-ignore-next-line
+         */
         $tree = new Tree($json);
         $this->data = $tree;
     }
@@ -57,7 +59,7 @@ class Manifest
     /**
      * Get node from tree
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function __get(
         string $name
@@ -137,7 +139,7 @@ class Manifest
     {
         if ($this->data->license->count()) {
             $arr = $this->data->license->toArray();
-            return Coercion::toStringOrNull(array_pop($arr));
+            return Coercion::tryString(array_pop($arr));
         }
 
         return $this->data->license->as('?string');
@@ -342,7 +344,7 @@ class Manifest
     /**
      * Get autoload config
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function getAutoloadConfig(): Tree
     {
@@ -373,7 +375,7 @@ class Manifest
     /**
      * Get repository config
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function getRepositoryConfig(): Tree
     {
@@ -383,7 +385,7 @@ class Manifest
     /**
      * Get config
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function getConfig(): Tree
     {
@@ -393,7 +395,7 @@ class Manifest
     /**
      * Get extra
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function getExtra(): Tree
     {
@@ -441,7 +443,7 @@ class Manifest
     /**
      * Get archive config
      *
-     * @return Tree<string|int|float|null>
+     * @return Tree<string|int|float|bool>
      */
     public function getArchiveConfig(): Tree
     {

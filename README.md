@@ -11,8 +11,6 @@
 
 Integra provides inspection tools for your composer.json file and a front end to control composer within your project.
 
-_Get news and updates on the [DecodeLabs blog](https://blog.decodelabs.com)._
-
 ---
 
 ## Installation

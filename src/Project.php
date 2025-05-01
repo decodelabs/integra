@@ -15,60 +15,39 @@ use DecodeLabs\Atlas\File;
 use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Exceptional;
-use DecodeLabs\Integra;
+use DecodeLabs\Monarch;
 use DecodeLabs\Systemic;
-use DecodeLabs\Terminus\Session;
-use DecodeLabs\Veneer;
-use DecodeLabs\Veneer\Plugin;
 
-class Context
+class Project
 {
-    #[Plugin]
-    public Dir $runDir;
+    protected(set) Dir $rootDir;
+    protected(set) Dir $binDir;
+    protected(set) File $composerFile;
 
-    #[Plugin]
-    public Dir $rootDir;
-
-    #[Plugin]
-    public Dir $binDir;
-
-    #[Plugin]
-    public File $composerFile;
-
-
-    protected bool $forceLocal = false;
-    protected bool $ciMode = false;
-
-    protected ?string $phpBinary = null;
     protected Manifest $manifest;
-    protected ?Session $session = null;
+
+    /**
+     * @var array<string,string>
+     */
+    protected array $paths = [];
 
 
     public function __construct(
-        ?Dir $runDir = null
+        ?Dir $dir = null
     ) {
-        if (!$runDir) {
-            if (false === ($dir = getcwd())) {
-                throw Exceptional::Runtime(
-                    message: 'Unable to get current working directory'
-                );
-            }
-
-            $runDir = Atlas::dir($dir);
-        }
-
-        $this->runDir = $runDir;
-        $this->composerFile = $this->findComposerJson();
-        $this->rootDir = $this->composerFile->getParent() ?? clone $runDir;
+        $dir ??= Atlas::dir(Monarch::$paths->working);
+        $this->composerFile = $this->findComposerJson($dir);
+        $this->rootDir = $this->composerFile->getParent() ?? $dir;
         $this->binDir = $this->findBinDir();
     }
 
     /**
      * Find composer json
      */
-    protected function findComposerJson(): File
-    {
-        $dir = $this->runDir;
+    protected function findComposerJson(
+        Dir $dir
+    ): File {
+        $fallback = $dir->getFile('composer.json');
 
         do {
             $file = $dir->getFile('composer.json');
@@ -80,7 +59,7 @@ class Context
             $dir = $dir->getParent();
         } while ($dir !== null);
 
-        return $this->runDir->getFile('composer.json');
+        return $fallback;
     }
 
     /**
@@ -105,9 +84,6 @@ class Context
 
 
 
-    /**
-     * Get composer.json manifest
-     */
     public function getLocalManifest(): Manifest
     {
         if (!isset($this->manifest)) {
@@ -117,101 +93,40 @@ class Context
         return $this->manifest;
     }
 
-    /**
-     * Set PHP binary
-     *
-     * @return $this
-     */
-    public function setPhpBinary(
-        ?string $bin
-    ): static {
-        $this->phpBinary = $bin;
-        return $this;
-    }
 
-    /**
-     * Get PHP binary
-     */
-    public function getPhpBinary(): string
-    {
-        if ($this->phpBinary !== null) {
-            return $this->phpBinary;
+    public function setBinaryPath(
+        string $binary,
+        string|File $path
+    ): void {
+        if($path instanceof File) {
+            $path = $path->getPath();
         }
 
-        $output = Systemic::$os->which('php');
+        if($path !== $binary) {
+            $this->paths[$binary] = $path;
+        }
+    }
 
-        if (
-            $output === null ||
-            str_contains($output, '/sbin/')
-        ) {
-            $output = 'php';
+    public function getBinaryPath(
+        string $binary
+    ): string {
+        if (isset($this->paths[$binary])) {
+            return $this->paths[$binary];
         }
 
-        return $output;
+        return Monarch::$paths->resolve($binary);
     }
 
-
-
-    /**
-     * Set CLI session
-     *
-     * @return $this
-     */
-    public function setSession(
-        Session $session
-    ): static {
-        $this->session = $session;
-        return $this;
+    public function removeBinaryPath(
+        string $binary
+    ): void {
+        unset($this->paths[$binary]);
     }
 
-    /**
-     * Get CLI session
-     */
-    public function getSession(): ?Session
-    {
-        return $this->session;
-    }
-
-
-
-    /**
-     * Force local calls
-     *
-     * @return $this
-     */
-    public function forceLocal(
-        bool $force = true
-    ): static {
-        $this->forceLocal = $force;
-        return $this;
-    }
-
-    /**
-     * Is forced local
-     */
-    public function isForcedLocal(): bool
-    {
-        return $this->forceLocal;
-    }
-
-    /**
-     * Set CI mode
-     *
-     * @return $this
-     */
-    public function setCiMode(
-        bool $mode
-    ): static {
-        $this->ciMode = $mode;
-        return $this;
-    }
-
-    /**
-     * Get CI mode
-     */
-    public function isCiMode(): bool
-    {
-        return $this->ciMode;
+    public function hasBinaryPath(
+        string $binary
+    ): bool {
+        return isset($this->paths[$binary]);
     }
 
 
@@ -224,14 +139,7 @@ class Context
         string $arg,
         string ...$args
     ): bool {
-        if (!(
-            $this->forceLocal &&
-            $arg === 'global'
-        )) {
-            $args = [$arg, ...$args];
-        }
-
-        $args = $this->reorderArguments($args);
+        $args = $this->reorderArguments([$arg, ...$args]);
 
         if (null === ($composer = Systemic::$os->which('composer'))) {
             throw Exceptional::NotFound(
@@ -239,7 +147,7 @@ class Context
             );
         }
 
-        array_unshift($args, $this->getPhpBinary(), $composer);
+        array_unshift($args, $this->getBinaryPath('php'), $composer);
         return Systemic::run($args, $this->rootDir);
     }
 
@@ -250,13 +158,7 @@ class Context
         string $arg,
         string ...$args
     ): bool {
-        $args = [$arg, ...$args];
-
-        if (!$this->forceLocal) {
-            $args = ['global', ...$args];
-        }
-
-        return $this->run(...$args);
+        return $this->run('global', $arg, ...$args);
     }
 
 
@@ -290,12 +192,6 @@ class Context
             } else {
                 $output[] = $arg;
             }
-        }
-
-        if (
-            $this->ciMode &&
-            !in_array('--no-interaction', $output)
-        ) {
         }
 
         if (!empty($script)) {
@@ -463,21 +359,6 @@ class Context
         return $this->runGlobal(...['remove', $name, ...$other, '--dev']);
     }
 
-    /**
-     * Prepare package install name
-     */
-    public function preparePackageInstallName(
-        string $name,
-        ?string $version = null
-    ): string {
-        $pkg = $name;
-
-        if ($version !== null) {
-            $pkg .= ':' . $version;
-        }
-
-        return $pkg;
-    }
 
     /**
      * Has package
@@ -501,9 +382,3 @@ class Context
         return $this->getLocalManifest()->getExtra();
     }
 }
-
-// Register the Veneer facade
-Veneer\Manager::getGlobalManager()->register(
-    Context::class,
-    Integra::class
-);

@@ -14,7 +14,6 @@ use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Coercion;
 use DecodeLabs\Collections\Tree;
-use DecodeLabs\Integra;
 use DecodeLabs\Integra\Structure\Author;
 use DecodeLabs\Integra\Structure\Funding;
 use DecodeLabs\Integra\Structure\Package;
@@ -405,15 +404,14 @@ class Manifest
     /**
      * Get bin files
      *
-     * @return array<string,File>
+     * @return array<string>
      */
     public function getBinFiles(): array
     {
         $output = [];
 
         foreach ($this->data->bin as $node) {
-            $path = $node->as('string');
-            $output[$path] = Integra::$binDir->getFile($path);
+            $output[] = $node->as('string');
         }
 
         return $output;

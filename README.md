@@ -23,37 +23,36 @@ composer require decodelabs/integra
 
 ## Usage
 
-Load a context to work from:
+Load a project to work from:
 
 ```php
-use DecodeLabs\Integra\Context;
+use DecodeLabs\Integra\Project;
 
-$context = new Context('path/to/project/');
+$project = new Project('path/to/project/');
 ```
 
-Or use the `Integra` Veneer frontage to work from `cwd()`.
+If no path is specified, the current working directory will be used.
 Integra will search back up the file tree for the nearest composer.json.
 
 
 ```php
-echo Integra::$runDir; // Working directory
-echo Integra::$rootDir; // Parent or current dir containing composer.json
-echo Integra::$binDir; // Bin dir relative to composer
-echo Integra::$composerFile; // Location  of composer.json
+echo $project->rootDir; // Parent or current dir containing composer.json
+echo $project->binDir; // Bin dir relative to composer
+echo $project->composerFile; // Location  of composer.json
 
-Integra::run('update'); // composer update
-Integra::runGlobal('update'); // composer global update
-Integra::runScript('my-script'); // composer run-script my-script
-Integra::runBin('phpstan', '--debug'); // composer exec phpstan -- --debug
-Integra::runGlobalBin('phpstan', '--debug'); // composer global exec phpstan -- --debug
+$project->run('update'); // composer update
+$project->runGlobal('update'); // composer global update
+$project->runScript('my-script'); // composer run-script my-script
+$project->runBin('phpstan', '--debug'); // composer exec phpstan -- --debug
+$project->runGlobalBin('phpstan', '--debug'); // composer global exec phpstan -- --debug
 
-if(!Integra::hasPackage('package1')) {
-    Integra::install('package1', 'package2'); // composer require package1 package2
+if(!$project->hasPackage('package1')) {
+    $project->install('package1', 'package2'); // composer require package1 package2
 }
 
-Integra::installDev('package1', 'package2'); // composer require package1 package2 --dev
-Integra::installGlobal('package1', 'package2'); // composer global require package1 package2
-Integra::installDevGlobal('package1', 'package2'); // composer global require package1 package2 --dev
+$project->installDev('package1', 'package2'); // composer require package1 package2 --dev
+$project->installGlobal('package1', 'package2'); // composer global require package1 package2
+$project->installDevGlobal('package1', 'package2'); // composer global require package1 package2 --dev
 ```
 
 ### Manifest
@@ -61,7 +60,7 @@ Integra::installDevGlobal('package1', 'package2'); // composer global require pa
 Access the composer.json manifest:
 
 ```php
-$manifest = Integra::getLocalManifest();
+$manifest = $project->getLocalManifest();
 echo $manifest->getDescription();
 
 foreach($manifest->getRequiredPackages() as $package) {

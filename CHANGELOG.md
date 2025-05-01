@@ -1,3 +1,11 @@
+## v0.2.0 (2025-05-01)
+* Refactored path handling
+* Renamed Context to Project
+* Removed forceLocal
+* Removed CI mode
+* Removed Terminus dependency
+* Removed Veneer dependency
+
 ## v0.1.13 (2025-04-02)
 * Upgraded Collections dependency
 

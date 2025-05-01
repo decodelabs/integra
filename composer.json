@@ -16,20 +16,16 @@
         "decodelabs/collections": "^0.11",
         "decodelabs/exceptional": "^0.5",
         "decodelabs/lucid": "^0.5",
-        "decodelabs/systemic": "^0.11",
-        "decodelabs/veneer": "^0.12.1"
+        "decodelabs/monarch": "^0.1.2",
+        "decodelabs/systemic": "^0.11"
     },
     "require-dev": {
-        "decodelabs/terminus": "^0.11",
         "decodelabs/phpstan-decodelabs": "^0.7"
     },
     "autoload": {
         "psr-4": {
             "DecodeLabs\\Integra\\": "src/"
-        },
-        "files": [
-            "src/Context.php"
-        ]
+        }
     },
     "extra": {
         "branch-alias": {

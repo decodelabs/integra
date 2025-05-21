@@ -99,7 +99,7 @@ class Project
         string|File $path
     ): void {
         if($path instanceof File) {
-            $path = $path->getPath();
+            $path = $path->path;
         }
 
         if($path !== $binary) {

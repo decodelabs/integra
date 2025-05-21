@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.4",
 
-        "decodelabs/atlas": "^0.12",
+        "decodelabs/atlas": "^0.13",
         "decodelabs/coercion": "^0.3",
         "decodelabs/collections": "^0.11",
         "decodelabs/exceptional": "^0.5",

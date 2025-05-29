@@ -204,6 +204,42 @@ class Project
 
 
 
+    public function setConfig(
+        string $key,
+        string $value
+    ): bool {
+        return $this->run('config', $key, $value);
+    }
+
+    public function getConfig(
+        string $key
+    ): ?string {
+        if (null === ($composer = Systemic::$os->which('composer'))) {
+            throw Exceptional::NotFound(
+                message: 'Unable to locate global composer executable'
+            );
+        }
+
+        $output = Systemic::capture([
+            $this->getBinaryPath('php'),
+            $composer,
+            'config',
+            '--absolute',
+            $key
+        ], $this->rootDir);
+
+        if(
+            !$output->wasSuccessful() ||
+            !$output->hasOutput()
+        ) {
+            return null;
+        }
+
+        return trim((string)$output->getOutput());
+    }
+
+
+
     /**
      * Has script
      */

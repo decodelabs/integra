@@ -20,9 +20,9 @@ use DecodeLabs\Systemic;
 
 class Project
 {
-    protected(set) Dir $rootDir;
-    protected(set) Dir $binDir;
-    protected(set) File $composerFile;
+    public protected(set) Dir $rootDir;
+    public protected(set) Dir $binDir;
+    public protected(set) File $composerFile;
 
     protected Manifest $manifest;
 
@@ -98,11 +98,11 @@ class Project
         string $binary,
         string|File $path
     ): void {
-        if($path instanceof File) {
+        if ($path instanceof File) {
             $path = $path->path;
         }
 
-        if($path !== $binary) {
+        if ($path !== $binary) {
             $this->paths[$binary] = $path;
         }
     }
@@ -228,7 +228,7 @@ class Project
             $key
         ], $this->rootDir);
 
-        if(
+        if (
             !$output->wasSuccessful() ||
             !$output->hasOutput()
         ) {

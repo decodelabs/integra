@@ -42,9 +42,6 @@ class Project
         $this->binDir = $this->findBinDir();
     }
 
-    /**
-     * Find composer json
-     */
     protected function findComposerJson(
         Dir $dir
     ): File {
@@ -63,9 +60,6 @@ class Project
         return $fallback;
     }
 
-    /**
-     * Find bin dir
-     */
     protected function findBinDir(): Dir
     {
         if (
@@ -131,11 +125,6 @@ class Project
     }
 
 
-
-
-    /**
-     * Run composer command
-     */
     public function run(
         string $arg,
         string ...$args
@@ -152,9 +141,6 @@ class Project
         return $this->systemic->run($args, $this->rootDir);
     }
 
-    /**
-     * Run composer command
-     */
     public function runGlobal(
         string $arg,
         string ...$args
@@ -241,9 +227,6 @@ class Project
 
 
 
-    /**
-     * Has script
-     */
     public function hasScript(
         string $name
     ): bool {
@@ -251,8 +234,6 @@ class Project
     }
 
     /**
-     * Get scripts list
-     *
      * @return array<string, string>
      */
     public function getScripts(): array
@@ -260,9 +241,6 @@ class Project
         return $this->getLocalManifest()->getScripts();
     }
 
-    /**
-     * Run script
-     */
     public function runScript(
         string $name,
         string ...$args
@@ -272,9 +250,7 @@ class Project
 
 
 
-    /**
-     * Has bin
-     */
+
     public function hasBin(
         string $name
     ): bool {
@@ -284,8 +260,6 @@ class Project
     }
 
     /**
-     * Get bin list
-     *
      * @return array<File>
      */
     public function getBins(): array
@@ -293,9 +267,6 @@ class Project
         return $this->binDir->listFiles();
     }
 
-    /**
-     * Run binary
-     */
     public function runBin(
         string $name,
         string ...$args
@@ -303,9 +274,6 @@ class Project
         return $this->run('exec', $name, '--', ...$args);
     }
 
-    /**
-     * Run global binary
-     */
     public function runGlobalBin(
         string $name,
         string ...$args
@@ -316,9 +284,6 @@ class Project
 
 
 
-    /**
-     * Install package
-     */
     public function install(
         string $name,
         string ...$other
@@ -326,9 +291,6 @@ class Project
         return $this->run('require', $name, ...$other);
     }
 
-    /**
-     * Install package
-     */
     public function installDev(
         string $name,
         string ...$other
@@ -336,9 +298,6 @@ class Project
         return $this->run(...['require', $name, ...$other, '--dev']);
     }
 
-    /**
-     * Install package
-     */
     public function installGlobal(
         string $name,
         string ...$other
@@ -346,9 +305,6 @@ class Project
         return $this->runGlobal(...['require', $name, ...$other, '--with-all-dependencies']);
     }
 
-    /**
-     * Install package
-     */
     public function installDevGlobal(
         string $name,
         string ...$other
@@ -356,9 +312,6 @@ class Project
         return $this->runGlobal(...['require', $name, ...$other, '--dev', '--with-all-dependencies']);
     }
 
-    /**
-     * Uninstall package
-     */
     public function uninstall(
         string $name,
         string ...$other
@@ -366,9 +319,6 @@ class Project
         return $this->run('remove', $name, ...$other);
     }
 
-    /**
-     * Uninstall package
-     */
     public function uninstallDev(
         string $name,
         string ...$other
@@ -376,9 +326,6 @@ class Project
         return $this->run(...['remove', $name, ...$other, '--dev']);
     }
 
-    /**
-     * Uninstall package
-     */
     public function uninstallGlobal(
         string $name,
         string ...$other
@@ -386,9 +333,6 @@ class Project
         return $this->runGlobal('remove', $name, ...$other);
     }
 
-    /**
-     * Uninstall package
-     */
     public function uninstallDevGlobal(
         string $name,
         string ...$other
@@ -397,9 +341,6 @@ class Project
     }
 
 
-    /**
-     * Has package
-     */
     public function hasPackage(
         string $package
     ): bool {
@@ -410,8 +351,6 @@ class Project
 
 
     /**
-     * Get extra config
-     *
      * @return Tree<string|int|float|bool>
      */
     public function getExtra(): Tree

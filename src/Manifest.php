@@ -34,9 +34,6 @@ class Manifest
         $this->reload();
     }
 
-    /**
-     * Reload data
-     */
     public function reload(): void
     {
         if (!$this->file->exists()) {
@@ -56,8 +53,6 @@ class Manifest
 
 
     /**
-     * Get node from tree
-     *
      * @return Tree<string|int|float|bool>
      */
     public function __get(
@@ -67,33 +62,22 @@ class Manifest
     }
 
 
-    /**
-     * Get package name
-     */
     public function getName(): ?string
     {
         return $this->data->name->as('?string');
     }
 
-    /**
-     * Get package description
-     */
     public function getDescription(): ?string
     {
         return $this->data->description->as('?string');
     }
 
-    /**
-     * Get package type
-     */
     public function getType(): ?string
     {
         return $this->data->type->as('?string');
     }
 
     /**
-     * Get package keywords
-     *
      * @return array<string>
      */
     public function getKeywords(): ?array
@@ -101,17 +85,11 @@ class Manifest
         return $this->data->keywords->as('string[]');
     }
 
-    /**
-     * Get homepage URL
-     */
     public function getHomepageUrl(): ?string
     {
         return $this->data->homepage->as('?string');
     }
 
-    /**
-     * Get readme path
-     */
     public function getReadmeFile(): ?File
     {
         if (null === ($path = $this->data->readme->as('?string'))) {
@@ -121,17 +99,12 @@ class Manifest
         return Atlas::getFile(dirname((string)$this->file) . '/' . $path);
     }
 
-    /**
-     * Get release date
-     */
     public function getReleaseDate(): ?DateTime
     {
         return $this->data->time->as('?date');
     }
 
     /**
-     * Get license
-     *
      * @return string|array<string>|null
      */
     public function getLicense(): string|array|null
@@ -145,8 +118,6 @@ class Manifest
     }
 
     /**
-     * Get authors
-     *
      * @return array<Author>
      */
     public function getAuthors(): array
@@ -166,8 +137,6 @@ class Manifest
     }
 
     /**
-     * Get support info
-     *
      * @return array<string,string>|null
      */
     public function getSupport(): ?array
@@ -182,8 +151,6 @@ class Manifest
     }
 
     /**
-     * Get funding sources
-     *
      * @return array<Funding>
      */
     public function getFundingSources(): array
@@ -201,8 +168,6 @@ class Manifest
     }
 
     /**
-     * Get require list
-     *
      * @return array<string, Package>
      */
     public function getRequiredPackages(): array
@@ -211,8 +176,6 @@ class Manifest
     }
 
     /**
-     * Get require-dev list
-     *
      * @return array<string, Package>
      */
     public function getRequiredDevPackages(): array
@@ -220,9 +183,6 @@ class Manifest
         return $this->getPackageMap('require-dev');
     }
 
-    /**
-     * Has package in either list
-     */
     public function hasPackage(
         string $package
     ): bool {
@@ -232,8 +192,6 @@ class Manifest
     }
 
     /**
-     * Get installed packages
-     *
      * @return array<string, Package>
      */
     public function getInstalledPackages(): array
@@ -245,8 +203,6 @@ class Manifest
     }
 
     /**
-     * Get required extensions
-     *
      * @return array<string>
      */
     public function getRequiredExtensions(): array
@@ -267,9 +223,6 @@ class Manifest
         return $output;
     }
 
-    /**
-     * Get package version
-     */
     public function getPackageVersion(
         string $package
     ): ?string {
@@ -279,8 +232,6 @@ class Manifest
     }
 
     /**
-     * Get conflict list
-     *
      * @return array<string,Package>
      */
     public function getConflictingPackages(): array
@@ -289,8 +240,6 @@ class Manifest
     }
 
     /**
-     * Get replace list
-     *
      * @return array<string,Package>
      */
     public function getReplacedPackages(): array
@@ -299,8 +248,6 @@ class Manifest
     }
 
     /**
-     * Get provide list
-     *
      * @return array<string, Package>
      */
     public function getProvidedPackages(): array
@@ -309,8 +256,6 @@ class Manifest
     }
 
     /**
-     * Get require list
-     *
      * @return array<string, Package>
      */
     protected function getPackageMap(
@@ -329,8 +274,6 @@ class Manifest
     }
 
     /**
-     * Get suggested packages
-     *
      * @return array<string,string>
      */
     public function getSuggestedPackages(): array
@@ -341,8 +284,6 @@ class Manifest
     }
 
     /**
-     * Get autoload config
-     *
      * @return Tree<string|int|float|bool>
      */
     public function getAutoloadConfig(): Tree
@@ -351,9 +292,6 @@ class Manifest
     }
 
 
-    /**
-     * Get minimum stability
-     */
     public function getMinimumStability(): string
     {
         return $this->data->__get('minimum-stability')->as('string', [
@@ -361,9 +299,6 @@ class Manifest
         ]);
     }
 
-    /**
-     * Get prefer stable
-     */
     public function shouldPreferStable(): bool
     {
         return $this->data->__get('prefer-stable')->as('bool', [
@@ -372,8 +307,6 @@ class Manifest
     }
 
     /**
-     * Get repository config
-     *
      * @return Tree<string|int|float|bool>
      */
     public function getRepositoryConfig(): Tree
@@ -382,8 +315,6 @@ class Manifest
     }
 
     /**
-     * Get config
-     *
      * @return Tree<string|int|float|bool>
      */
     public function getConfig(): Tree
@@ -392,8 +323,6 @@ class Manifest
     }
 
     /**
-     * Get extra
-     *
      * @return Tree<string|int|float|bool>
      */
     public function getExtra(): Tree
@@ -402,8 +331,6 @@ class Manifest
     }
 
     /**
-     * Get bin files
-     *
      * @return array<string>
      */
     public function getBinFiles(): array
@@ -418,8 +345,6 @@ class Manifest
     }
 
     /**
-     * Get scripts
-     *
      * @return array<string,string>
      */
     public function getScripts(): array
@@ -429,9 +354,6 @@ class Manifest
         return $output;
     }
 
-    /**
-     * Has script
-     */
     public function hasScript(
         string $name
     ): bool {
@@ -439,8 +361,6 @@ class Manifest
     }
 
     /**
-     * Get archive config
-     *
      * @return Tree<string|int|float|bool>
      */
     public function getArchiveConfig(): Tree
@@ -448,9 +368,6 @@ class Manifest
         return $this->data->archive;
     }
 
-    /**
-     * Is abandoned
-     */
     public function isAbandoned(): bool
     {
         return $this->data->abandoned->as('bool', [
@@ -459,8 +376,6 @@ class Manifest
     }
 
     /**
-     * Get non-feature branches
-     *
      * @return array<string>
      */
     public function getNonFeatureBranches(): array

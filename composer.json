@@ -11,13 +11,13 @@
     "require": {
         "php": "^8.4",
 
-        "decodelabs/atlas": "^0.13.1",
+        "decodelabs/atlas": "^0.14",
         "decodelabs/coercion": "^0.3.3",
-        "decodelabs/collections": "^0.11.3",
+        "decodelabs/collections": "^0.12",
         "decodelabs/exceptional": "^0.6.1",
-        "decodelabs/lucid": "^0.5.2",
-        "decodelabs/monarch": "^0.1.4",
-        "decodelabs/systemic": "^0.11.18"
+        "decodelabs/lucid": "^0.6",
+        "decodelabs/monarch": "^0.2",
+        "decodelabs/systemic": "^0.12"
     },
     "require-dev": {
         "decodelabs/phpstan-decodelabs": "^0.7"

@@ -118,7 +118,7 @@ class Manifest
             return null;
         }
 
-        return Atlas::file(dirname((string)$this->file) . '/' . $path);
+        return Atlas::getFile(dirname((string)$this->file) . '/' . $path);
     }
 
     /**

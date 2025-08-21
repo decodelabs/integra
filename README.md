@@ -27,8 +27,10 @@ Load a project to work from:
 
 ```php
 use DecodeLabs\Integra\Project;
+use DecodeLabs\Monarch;
+use DecodeLabs\Systemic;
 
-$project = new Project('path/to/project/');
+$project = new Project('path/to/project/', Monarch::getService(Systemic::class));
 ```
 
 If no path is specified, the current working directory will be used.

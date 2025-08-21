@@ -33,9 +33,10 @@ class Project
 
 
     public function __construct(
-        ?Dir $dir = null
+        ?Dir $dir,
+        protected Systemic $systemic
     ) {
-        $dir ??= Atlas::dir(Monarch::$paths->working);
+        $dir ??= Atlas::getDir(Monarch::getPaths()->working);
         $this->composerFile = $this->findComposerJson($dir);
         $this->rootDir = $this->composerFile->getParent() ?? $dir;
         $this->binDir = $this->findBinDir();
@@ -114,7 +115,7 @@ class Project
             return $this->paths[$binary];
         }
 
-        return Monarch::$paths->resolve($binary);
+        return Monarch::getPaths()->resolve($binary);
     }
 
     public function removeBinaryPath(
@@ -141,14 +142,14 @@ class Project
     ): bool {
         $args = $this->reorderArguments([$arg, ...$args]);
 
-        if (null === ($composer = Systemic::$os->which('composer'))) {
+        if (null === ($composer = $this->systemic->os->which('composer'))) {
             throw Exceptional::NotFound(
                 message: 'Unable to locate global composer executable'
             );
         }
 
         array_unshift($args, $this->getBinaryPath('php'), $composer);
-        return Systemic::run($args, $this->rootDir);
+        return $this->systemic->run($args, $this->rootDir);
     }
 
     /**
@@ -214,13 +215,13 @@ class Project
     public function getConfig(
         string $key
     ): ?string {
-        if (null === ($composer = Systemic::$os->which('composer'))) {
+        if (null === ($composer = $this->systemic->os->which('composer'))) {
             throw Exceptional::NotFound(
                 message: 'Unable to locate global composer executable'
             );
         }
 
-        $output = Systemic::capture([
+        $output = $this->systemic->capture([
             $this->getBinaryPath('php'),
             $composer,
             'config',

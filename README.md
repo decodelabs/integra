@@ -15,6 +15,8 @@ Integra provides inspection tools for your composer.json file and a front end to
 
 ## Installation
 
+This package requires PHP 8.4 or higher.
+
 Install via Composer:
 
 ```bash

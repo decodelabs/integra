@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package Integra
- * @license http://opensource.org/licenses/MIT
+ * Integra
+ * @license https://opensource.org/licenses/MIT
  */
 
 declare(strict_types=1);
